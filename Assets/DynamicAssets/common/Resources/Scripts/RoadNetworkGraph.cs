@@ -12,11 +12,13 @@ public class RoadNetworkGraph : MonoBehaviour {
 	void Update () {
 	
 	}
-	[System.Serializable]
+
+
 	public class Node {
 		Edge[] outgoingEdges;
 	}
-	[System.Serializable]
+
+
 	public class Edge {
 		Node entryNode;
 		Node exitNode;

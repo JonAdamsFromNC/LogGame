@@ -22,6 +22,8 @@ sysinfo.txt
 
 #ignore standard unity assets
 StandardAssets/
+Vectrosity/
+VectrosityDemos/
 
 =============== 
 Unity generated
