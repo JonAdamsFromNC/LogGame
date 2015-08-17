@@ -9,24 +9,20 @@ public var numberOfPoints : int = 20;
 function Start()
 {
    // initialize line renderer component
-   var lineRenderer : LineRenderer =
-      GetComponent(LineRenderer);
+   var lineRenderer : LineRenderer = GetComponent(LineRenderer);
    if (null == lineRenderer)
    {
       gameObject.AddComponent(LineRenderer);
    }
    lineRenderer = GetComponent(LineRenderer);
    lineRenderer.useWorldSpace = true;
-   lineRenderer.material = new Material(
-      Shader.Find("Particles/Additive"));
+   lineRenderer.material = new Material( Shader.Find("Particles/Additive"));
 }
 function Update()
 {
    // check parameters and components
-   var lineRenderer : LineRenderer =
-      GetComponent(LineRenderer);
-   if (null == lineRenderer || null == start
-      || null == middle || null == end)
+   var lineRenderer : LineRenderer = GetComponent(LineRenderer);
+   if (null == lineRenderer || null == start || null == middle || null == end)
    {
       return; // no points specified
    }
