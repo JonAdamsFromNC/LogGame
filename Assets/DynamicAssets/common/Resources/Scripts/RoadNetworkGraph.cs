@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class RoadNetworkGraph : MonoBehaviour {
 
@@ -22,23 +23,31 @@ public class RoadNetworkGraph : MonoBehaviour {
 		//loop through the travel lines and define two nodes and an edge
 
 		//find travel lanes
-		GameObject[] foundLanes;
-		foundLanes = GameObject.FindGameObjectsWithTag ("road");
+		List<GameObject> foundRoads = new List<GameObject>();
+		foundRoads = GameObject.FindGameObjectsWithTag ("road").ToList();
+		List<NavDef.Lane> foundLanes = new List<NavDef.Lane> ();
+		foreach (GameObject foundRoad in foundRoads){
+			//for (int i = 0; i < foundRoad.GetComponent<NavDef>().lanes.Length; i++){
+			foreach (NavDef.Lane thisLane in foundRoad.GetComponent<NavDef>().lanes){
+				foundLanes.Add (thisLane);
+			}
+		}
+
 		int nodeIterator = 0;
 		int edgeIterator = 0;
-		foreach (GameObject foundLane in foundLanes)
+		foreach (NavDef.Lane foundLane in foundLanes)
 		{
 			//Debug.Log (foundLane.GetComponent<NavDef>().lanes[0].entryPt);
 			//Debug.Log (foundLane.transform.TransformPoint(foundLane.GetComponent<NavDef>().lanes[0].entryPt));
 
 			//first add an edge, and a new node at both ends
 			Edge thisEdge = new Edge ();
-			thisEdge.maxSpeed = foundLane.GetComponent<NavDef> ().lanes [0].maxSpeed;
-			thisEdge.midSpan = foundLane.transform.TransformPoint(foundLane.GetComponent<NavDef>().lanes[0].midPt);
+			thisEdge.maxSpeed = foundLane.maxSpeed;
+			thisEdge.midSpan = foundLane.midPt;
 			Node thisEntryNode = new Node ();
 			Node thisExitNode = new Node ();
 			thisEntryNode.outgoingEdges.Add (thisEdge);
-			thisEntryNode.worldCoords = foundLane.transform.TransformPoint(foundLane.GetComponent<NavDef>().lanes[0].entryPt);
+			thisEntryNode.worldCoords = foundLane.entryPt;
 			thisEdge.entryNode = thisEntryNode;
 			thisEdge.exitNode = thisExitNode;
 			
@@ -54,8 +63,23 @@ public class RoadNetworkGraph : MonoBehaviour {
 		}
 
 		//after looping through all edges, loop back through the nodes list and eliminate down to only unique nodes on worldcoords
+//		foreach(KeyValuePair<int, Node> entry in nodesDict)
+//		{
+//			foreach(KeyValuePair<int, Node> entry2 in nodesDict)){
+//				// do something with entry.Value or entry.Key
+//				if (entry.Key != entry2.key){
+//					if (entry.Value.worldCoords == entry2.value.worldcoords){
+//
+//					}
+//				}
+//			}
+//		}
+
+		///WORKING ON THIS
+		nodesDict.GroupBy(
 
 
+		//debug print each node with outgoing edges to test our combining strat
 		foreach(KeyValuePair<int, Node> entry in nodesDict)
 		{
 			if (entry.Value.outgoingEdges.Count != 0){
